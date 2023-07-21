@@ -1,0 +1,8 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/median-pm-core",
+    "crates/median-pm-test",
+]
+
+
