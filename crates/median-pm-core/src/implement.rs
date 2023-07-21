@@ -55,11 +55,23 @@ fn calculate_median_return_u64(mut numbers: Vec<u64>) -> u64 {
   numbers[n / 2]
 }
 
+
+fn convert_to_float_if_integer(input: &str) -> String {
+  if input.chars().all(|c| c.is_digit(10)) {
+      return format!("{}.0", input);
+  } else {
+      return input.to_string();
+  }
+}
+
+
 pub fn median_impl(input: TokenStream) -> TokenStream2 {
   eprintln!("INPUT: {:#?}", input);
   let punctuated_integers = parse_tokenstream(input);
   let returned_ts = if punctuated_integers.len() % 2 == 0 {
     let median = calculate_median_return_f64(punctuated_integers).to_string();
+    let median = convert_to_float_if_integer(&median);
+    eprintln!("median f64 = {:#?}", &median);
     let median_litfloat = parse_str::<LitFloat>(median.as_str());
     match median_litfloat {
       Ok(ref mfloat) => {},
@@ -68,12 +80,13 @@ pub fn median_impl(input: TokenStream) -> TokenStream2 {
       }
     }
     let mfloat = median_litfloat.unwrap();
-    eprintln!("{:#?}", mfloat);
+    eprintln!("mfloat = {:#?}", &mfloat);
     quote!(
       #mfloat
     ).into()
   } else {
     let median = calculate_median_return_u64(punctuated_integers).to_string();
+    eprintln!("median u64 = {:#?}", &median);
     let median_litint = parse_str::<LitInt>(median.as_str());
     match median_litint {
       Ok(ref mint) => {},
@@ -82,7 +95,7 @@ pub fn median_impl(input: TokenStream) -> TokenStream2 {
       }
     }
     let mint = median_litint.unwrap();
-    eprintln!("{:#?}", mint);
+    eprintln!("mint = {:#?}", mint);
     quote!(
       #mint
     ).into()
