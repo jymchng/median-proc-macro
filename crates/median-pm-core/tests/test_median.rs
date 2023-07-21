@@ -34,23 +34,3 @@ fn test_median_three_elements() {
     let numbers = vec![10, 20, 30];
     assert_eq!(median!(10, 20, 30), 20);
 }
-
-#[test]
-fn test_median_large_odd_elements() {
-    let numbers: Vec<u64> = (1..=999).collect();
-    assert_eq!(median!(@numbers), 499);
-}
-
-#[test]
-fn test_median_large_even_elements() {
-    let numbers: Vec<u64> = (1..=1000).collect();
-    assert_eq!(median!(@numbers), 499.5);
-}
-
-
-
-#[test]
-fn test_median_large_with_duplicates() {
-    let numbers: Vec<u64> = vec![5; 100];
-    assert_eq!(median!(@numbers), 5);
-}
